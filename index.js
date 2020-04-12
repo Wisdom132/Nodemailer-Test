@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
@@ -14,7 +15,9 @@ app.set("view engine", "handlebars");
 // static folder
 app.use("/public", express.static(path.join(__dirname, "public")));
 //body-parser
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
@@ -45,8 +48,8 @@ app.post("/send", (req, res) => {
     // port: 587,
     secure: false,
     auth: {
-      user: "ekpotwisdom@gmail.com", // generated ethereal user
-      pass: "spinosky" // generated ethereal password
+      user: process.env.EMAIL, // generated ethereal user
+      pass: process.env.PASSWORD // generated ethereal password
     },
     tls: {
       rejectUnauthorized: false
@@ -65,7 +68,7 @@ app.post("/send", (req, res) => {
   console.log("Message sent: %s", info.messageId);
 
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // res.render("contact", { msg: "Email Send!!!" });
+// res.render("contact", { msg: "Email Send!!!" });
 });
 
 app.listen(PORT, () => {
